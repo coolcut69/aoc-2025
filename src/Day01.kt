@@ -1,67 +1,28 @@
 fun main() {
+
     fun part1(input: List<String>): Int {
-        var position = 50
-        var timesZero = 0
-        for (string in input) {
-            val direction = string.take(1)
-            val clicks = string.substringAfter(direction).toInt()
-            when (direction) {
-                "L" -> {
-                    position -= clicks
-                    while (position < 0) {
-                        position += 100
-                    }
-                }
-
-                "R" -> {
-                    position += clicks
-                    while (position > 99) {
-                        position -= 100
-                    }
-                }
+        var dial = 50
+        return input.count {
+            dial = if (it[0] == 'L') {
+                (dial - it.drop(1).toInt()) % 100
+            } else {
+                (dial + it.drop(1).toInt()) % 100
             }
-            if (position == 0) {
-                timesZero += 1
-            }
+            dial == 0
         }
-
-        return timesZero
     }
 
     fun part2(input: List<String>): Int {
-        var position = 50
-        var timesZero = 0
-        for (string in input) {
-            val direction = string.take(1)
-            val clicks = string.substringAfter(direction).toInt()
-            val previousPosition = position
-            when (direction) {
-                "L" -> {
-                    position -= clicks
-                    while (position < 0) {
-                        position += 100
-                        if (position != 0 && previousPosition != 0) {
-                            timesZero += 1
-                        }
-                    }
-                }
-
-                "R" -> {
-                    position += clicks
-                    while (position > 99) {
-                        position -= 100
-                        if (position != 0 && previousPosition != 0) {
-                            timesZero += 1
-                        }
-                    }
-                }
-            }
-            if (position == 0) {
-                timesZero += 1
+        var dial = 50
+        var zeroes = 0
+        input.forEach {
+            val delta = if (it[0] == 'L') -1 else 1
+            repeat(it.drop(1).toInt()) {
+                dial = (dial + delta) % 100
+                if (dial == 0) zeroes++
             }
         }
-
-        return timesZero
+        return zeroes
     }
 
     // Test if implementation meets criteria from the description, like:
