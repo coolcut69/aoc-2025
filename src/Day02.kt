@@ -23,7 +23,7 @@ fun main() {
             IdRange(split[0], split[1])
         }
         var number = 0L
-        for (range in map) {
+        map.forEach { range ->
             for (i in range.first.toLong()..range.last.toLong())
                 if (isRepeatedTwice(i.toString())) {
                     number += i
@@ -38,7 +38,7 @@ fun main() {
             IdRange(split[0], split[1])
         }
         var number = 0L
-        for (range in map) {
+        map.forEach { range ->
             for (i in range.first.toLong()..range.last.toLong())
                 if (hasRepeatedSequence(i.toString())) {
                     number += i
