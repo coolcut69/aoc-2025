@@ -14,7 +14,7 @@ fun main() {
     }
 
     fun part2(input: List<String>): Long {
-        return 3121910778619L
+        return Day03(input).solvePart2()
     }
 
     val testInput = readInput("Day03_test")
@@ -65,5 +65,33 @@ private fun getJoltage(
             }
         }
     }
+
+}
+
+
+/**
+ * Advent of Code 2025, Day 3 - Lobby
+ * Problem Description: http://adventofcode.com/2025/day/3
+ * Blog Post/Commentary: https://todd.ginsberg.com/post/advent-of-code/2025/day3/
+ */
+class Day03(input: List<String>) {
+
+    private val banks: List<List<IndexedValue<Int>>> = input.map { parseInput(it) }
+
+    fun solvePart1(): Long =
+        banks.sumOf { joltage(it, 2) }
+
+    fun solvePart2(): Long =
+        banks.sumOf { joltage(it, 12) }
+
+    private fun joltage(bank: List<IndexedValue<Int>>, batteries: Int): Long =
+        (1 .. batteries).fold(0L to 0) { (total, leftIndex), offset ->
+            bank.subList(leftIndex, bank.size - batteries + offset)
+                .maxBy { it.value }
+                .let { (total * 10) + it.value to it.index + 1 }
+        }.first
+
+    private fun parseInput(input: String): List<IndexedValue<Int>> =
+        input.map { it.digitToInt() }.withIndex().toList()
 
 }
